@@ -10,6 +10,23 @@ namespace Prony
         public double Re { get; set; }
         public double Im { get; set; }
 
+        public Complex()
+        {
+            Re = 0.0; Im = 0.0;
+        }
+
+        public Complex(double re, double im)
+        {
+            Re = re;
+            Im = im;
+        }
+
+        public Complex(Complex a)
+        {
+            Re = a.Re;
+            Im = a.Im;
+        }
+
         public double Abs { get { return Math.Sqrt(Re * Re + Im * Im); } }
         public double Arg
         {
