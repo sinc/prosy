@@ -96,6 +96,90 @@ namespace Prony
             return eps;
         }
 
+        public bool kalitkin(int K, double[] b, ref Complex zz)
+        {
+            double eps = 1e-16;
+            bool kritKey = false;
+            bool exitKey = true;
+            double xerr0 = 1e5;
+            if (K > 1)
+            {
+
+                Complex x0 = new Complex(-0.1, 0.0);
+                Complex x1 = new Complex(0.1, 0.0);
+                Complex x2 = new Complex(0.0, 0.0);
+                while (exitKey)
+                {
+                    Complex p0 = new Complex(1.0, 0.0);
+                    Complex p1 = new Complex(1.0, 0.0);
+                    Complex p2 = new Complex(1.0, 0.0);
+                    for (int i = 1; i < K + 1; i++)
+                    {
+                        p2 *= x2; p2.Re += b[i];
+                        p1 *= x1; p1.Re += b[i];
+                        p0 *= x0; p0.Re += b[i];
+                    }
+                    Complex f1 = p1 - p0;
+                    Complex f2 = p2 - p1;
+                    Complex y1 = x1 - x0;
+                    Complex y2 = x2 - x1;
+                    Complex y0 = x2 - x0;
+                    Complex f0 = f2 * y1;
+                    f1 *= y2;
+                    f0 -= f1;
+                    y0 *= y1 * y2;
+                    if (y0.Abs == 0.0)
+                        return true;
+                    f0 /= y0;
+                    f1 = (x2 + x1) * f0;
+                    f2 /= y2;
+                    f1 = f2 - f1;
+                    y0 = f0 * x2 * x2;
+                    y0 = p2 - y0;
+                    f2 = y0 - (x2 * f1);
+                    if (f0.Abs == 0.0)
+                        return true;
+                    y0 = f1 / f0;
+                    y0.Re *= -0.5; y0.Im *= -0.5;
+                    y1 = f1 * f1;
+                    y2 = f0 * f2;
+                    y2.Re *= 4.0; y2.Im *= 4.0;
+                    y2 = y1 - y2;
+                    f1.Re = Math.Sqrt(y2.Abs);
+                    f1.Im = y2.Arg / 2.0;
+                    y1.Re = f1.Re * Math.Cos(f1.Im) / 2.0;
+                    y1.Im = f1.Re * Math.Sin(f1.Im) / 2.0;
+                    y1 /= f0;
+                    f0 = y0 - y1;
+                    f1 = y0 + y1;
+                    if (f0.Abs > f1.Abs)
+                        f2 = f0;
+                    else
+                        f2 = f1;
+                    f0 = f2 - x2;
+                    double xerr1 = f0.Abs;
+                    if (xerr1 < eps && !kritKey)
+                        kritKey = true;
+                    if (kritKey)
+                        if (xerr1 < xerr0 && xerr1 > 1e-20)
+                            exitKey = true;
+                        else
+                            exitKey = false; //??
+                    x0 = new Complex(x1);
+                    x1 = new Complex(x2);
+                    x2 = new Complex(f2);
+                    xerr0 = xerr1;
+                }
+                zz = x1;
+            }
+            if (K == 1)
+            {
+                zz = new Complex(-b[1], 0.0);
+                return false;
+            }
+            return true;
+        }
+
         public bool rootsLagerr(ref Complex[] roots)
         {
             int i = 0, j = 0;
