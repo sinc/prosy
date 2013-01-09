@@ -29,11 +29,7 @@ namespace grabwave
         private HScrollBar timeScroll;
         private ToolStrip toolBar;
 
-        struct complex
-        {
-            double re, im;
-        }
-
+        /*
         [DllImport("dsplib.dll")]
         static extern int test(int x);
 
@@ -51,7 +47,7 @@ namespace grabwave
 
         [DllImport("dsplib.dll")]
         static extern void PronySectrum(int P, int M, IntPtr Amp, IntPtr Pol, ref IntPtr spec);
-
+        */
 
         public MainForm()
         {
@@ -223,7 +219,7 @@ namespace grabwave
         [STAThread]
         static void Main()
         {
-            using (TextReader tr = new StreamReader("Signal1.txt"))
+            /*using (TextReader tr = new StreamReader("Signal1.txt"))
             {
                 int N = int.Parse(tr.ReadLine());
                 double[] sig = new double[N];
@@ -247,10 +243,8 @@ namespace grabwave
                 double[] pole = new double[P*2];                
                 Marshal.Copy(Amp, amplitude, 0, P * 2);
                 Marshal.Copy(Pol, pole, 0, P * 2);
-            }
-            /*Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());*/
+            }*/
+            //Application.Run(new MainForm());
         }
 
         private void recordButton_Click(object sender, EventArgs e)

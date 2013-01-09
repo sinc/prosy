@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Prony
+namespace prosy
 {
     public class Polynom
     {
@@ -96,7 +96,7 @@ namespace Prony
             return eps;
         }
 
-        public bool kalitkin(int K, double[] b, ref Complex zz)
+        public bool kalitkin(int K, double[] b, ref Complex zz, bool tempFlag)
         {
             double eps = 1e-16;
             bool kritKey = false;
